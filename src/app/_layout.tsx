@@ -6,7 +6,8 @@ import {
     Roboto_400Regular,
     Roboto_700Bold,
 } from '@expo-google-fonts/roboto'
-import { ActivityIndicator } from 'react-native'
+
+import { Loading } from "@/components/loading"
 
 export default function RootLayout() {
     const [fontsLoaded] = useFonts({
@@ -15,7 +16,7 @@ export default function RootLayout() {
     })
 
     if (!fontsLoaded) {
-        return <ActivityIndicator />
+        return <Loading />
     }
 
     return (
