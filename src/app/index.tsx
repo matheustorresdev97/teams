@@ -4,7 +4,7 @@ import { Users } from "lucide-react-native";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { Button } from "@/components/button";
-
+import { Input } from "@/components/input";
 
 
 export default function NewGroup() {
@@ -20,7 +20,9 @@ export default function NewGroup() {
                     subtitle="Crie a turma para adicionar as pessoas"
                 />
 
-                <Button title="Criar" />
+                <Input placeholder="Nome da turma" />
+
+                <Button title="Criar" style={{ marginTop: 20 }} />
             </View>
         </View>
     )
