@@ -6,12 +6,14 @@ import { Input } from "@/components/input";
 import { ButtonIcon } from "@/components/button-icon";
 import { Filter } from "@/components/filter";
 import { PlayerCard } from "@/components/player-card";
+import { ListEmpty } from "@/components/list-empty";
+import { Button } from "@/components/button";
 
 
 
 export default function Players() {
     const [team, setTeam] = useState('Time A')
-    const [players, setPlayers] = useState<string[]>(['John Doe', 'Mary Doe'])
+    const [players, setPlayers] = useState<string[]>([])
 
     return (
         <View className="flex-1 bg-gray-600 p-6">
@@ -51,7 +53,15 @@ export default function Players() {
                 renderItem={({ item }) => (
                     <PlayerCard name={item} onRemove={() => { }} />
                 )}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={[
+                    { paddingBottom: 100 },
+                    players.length <= 0 && { flex: 1 },
+                ]}
+                ListEmptyComponent={<ListEmpty message="Não há pessoas neste time" />}
             />
+
+            <Button title="Remover turma" type="secondary" />
         </View>
     )
 }
