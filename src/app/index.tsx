@@ -1,29 +1,25 @@
 import { View } from "react-native";
-import { colors } from "@/styles/colors";
-import { Users } from "lucide-react-native";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
-import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { ButtonIcon } from "@/components/button-icon";
 
 
-export default function NewGroup() {
+export default function Players() {
     return (
         <View className="flex-1 bg-gray-600 p-6">
             <Header showBackButton />
 
-            <View className="flex-1 justify-center items-center">
-                <Users size={56} color={colors.green[700]} className="self-center" />
+            <Highlight
+                title="Nova da Turma"
+                subtitle="Adicione a galera e separe os times"
+            />
 
-                <Highlight
-                    title="Nova Turma"
-                    subtitle="Crie a turma para adicionar as pessoas"
-                />
-
-                <Input placeholder="Nome da turma" />
-
-                <Button title="Criar" style={{ marginTop: 20 }} />
+            <View className="w-full bg-gray-700 flex-row justify-center rounded-md">
+                <Input placeholder="Nome do participante" autoCorrect={false} />
+                <ButtonIcon icon="add" />
             </View>
+
         </View>
     )
 }
