@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Alert, FlatList, Text, View } from "react-native";
+import { useEffect, useRef, useState } from 'react'
+import { Alert, FlatList, Text, TextInput, View } from "react-native";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { Input } from "@/components/input";
@@ -18,6 +18,8 @@ import { playersGetByGroupAndTeam } from "@/storage/player/players-get-by-group-
 export default function Players() {
     const { group } = useLocalSearchParams<{ group: string }>();
 
+    const newPlayerNameInputRef = useRef<TextInput>(null)
+
     const [newPlayerName, setNewPlayerName] = useState('')
     const [team, setTeam] = useState('Time A')
     const [players, setPlayers] = useState<PlayerProps[]>([])
@@ -35,7 +37,11 @@ export default function Players() {
         }
         try {
             await playerAddByGroup(newPlayer, group)
+
+            newPlayerNameInputRef.current?.blur()
+
             setNewPlayerName('')
+            fetchPlayersByTeam()
         } catch (error) {
             console.log(error)
             if (error instanceof AppError) {
@@ -59,6 +65,10 @@ export default function Players() {
         }
     }
 
+    useEffect(() => {
+        fetchPlayersByTeam()
+    }, [team])
+
     return (
         <View className="flex-1 bg-gray-600 p-6">
             <Header showBackButton />
@@ -70,10 +80,12 @@ export default function Players() {
 
             <View className="w-full bg-gray-700 flex-row justify-center rounded-md">
                 <Input
+                    inputRef={newPlayerNameInputRef}
                     value={newPlayerName}
                     onChangeText={setNewPlayerName}
                     placeholder="Nome do participante"
-                    autoCorrect={false}
+                    onSubmitEditing={handleAddPlayer}
+                    returnKeyType="done"
                 />
                 <ButtonIcon icon="add" onPress={handleAddPlayer} />
             </View>
