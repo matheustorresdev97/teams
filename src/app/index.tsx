@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { GroupCard } from "@/components/group-card";
 import { ListEmpty } from "@/components/list-empty";
+import { Button } from "@/components/button";
 
 
 export default function Index() {
@@ -23,8 +24,10 @@ export default function Index() {
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={() => (
                     <ListEmpty message="Que tal cadastrar a primeira turma?" />
-                  )}
+                )}
             />
+
+            <Button title="Criar nova turma" />
         </View>
     )
 }
