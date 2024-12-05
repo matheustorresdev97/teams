@@ -1,11 +1,12 @@
 import { FlatList, View } from "react-native";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { GroupCard } from "@/components/group-card";
 import { ListEmpty } from "@/components/list-empty";
 import { Button } from "@/components/button";
-import { router, useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
+import { groupGetAll } from "@/storage/group/group-get-all";
 
 
 export default function Index() {
@@ -17,6 +18,20 @@ export default function Index() {
     function handleNewGroup() {
         router.push('/new-group');
     }
+
+    async function fetchGroups() {
+        try {
+          const data = await groupGetAll()
+          setGroups(data)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      useFocusEffect(
+        useCallback(() => {
+          fetchGroups()
+        }, [])
+      )
 
     return (
         <View className="flex-1 bg-gray-600 p-6">

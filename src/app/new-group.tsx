@@ -7,6 +7,7 @@ import { Highlight } from "@/components/highlight";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { useRouter } from "expo-router";
+import { groupCreate } from "@/storage/group/group-create";
 
 
 export default function NewGroup() {
@@ -14,8 +15,15 @@ export default function NewGroup() {
 
     const [group, setGroup] = useState('')
 
-    function handleNewGroup() {
-        router.push(`/players/${group}`);
+    async function handleNewGroup() {
+        if (group.trim().length === 0) return
+        try {
+            await groupCreate(group)
+            router.push(`/players/${group}`);
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     return (
