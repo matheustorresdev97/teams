@@ -12,7 +12,7 @@ export function Button({ type = 'primary', title, ...rest }: ButtonProps) {
     return (
         <TouchableOpacity
             className={clsx(
-                'flex-1 min-h-[56px] max-h-[56px] rounded-md justify-center items-center',
+                'flex-1 w-full min-h-[56px] max-h-[56px] rounded-md justify-center items-center',
                 {
                     'bg-green-700': type === 'primary',
                     'bg-red-700': type === 'secondary',
