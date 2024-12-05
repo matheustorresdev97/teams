@@ -1,12 +1,18 @@
-import { View } from "react-native";
+import { useState } from "react";
+import { FlatList, Text, View } from "react-native";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { Input } from "@/components/input";
 import { ButtonIcon } from "@/components/button-icon";
 import { Filter } from "@/components/filter";
+import { PlayerCard } from "@/components/player-card";
+
 
 
 export default function Players() {
+    const [team, setTeam] = useState('Time A')
+    const [players, setPlayers] = useState<string[]>(['John Doe', 'Mary Doe'])
+
     return (
         <View className="flex-1 bg-gray-600 p-6">
             <Header showBackButton />
@@ -21,7 +27,31 @@ export default function Players() {
                 <ButtonIcon icon="add" />
             </View>
 
-            <Filter title="Time A" isActive />
+            <View className="w-full flex-row items-center mt-8 mx-0 mb-3">
+                <FlatList
+                    data={['Time A', 'Time B']}
+                    keyExtractor={item => item}
+                    renderItem={({ item }) => (
+                        <Filter
+                            title={item}
+                            isActive={item === team}
+                            onPress={() => setTeam(item)}
+                        />
+                    )}
+                    horizontal
+                />
+                <Text className="text-gray-200 font-bold text-sm">
+                    {players.length}
+                </Text>
+            </View>
+
+            <FlatList
+                data={players}
+                keyExtractor={item => item}
+                renderItem={({ item }) => (
+                    <PlayerCard name={item} onRemove={() => { }} />
+                )}
+            />
         </View>
     )
 }
