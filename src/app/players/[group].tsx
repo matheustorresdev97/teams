@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { Alert, FlatList, Text, View } from "react-native";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { Input } from "@/components/input";
@@ -9,15 +9,41 @@ import { PlayerCard } from "@/components/player-card";
 import { ListEmpty } from "@/components/list-empty";
 import { Button } from "@/components/button";
 import { useLocalSearchParams } from "expo-router";
+import { AppError } from "@/utils/app-error";
+import { playerAddByGroup } from "@/storage/player/player-add-by-group";
 
 
 
 export default function Players() {
     const { group } = useLocalSearchParams<{ group: string }>();
 
-
+    const [newPlayerName, setNewPlayerName] = useState('')
     const [team, setTeam] = useState('Time A')
     const [players, setPlayers] = useState<string[]>([])
+
+    async function handleAddPlayer() {
+        if (newPlayerName.trim().length === 0) {
+            return Alert.alert(
+                'Nova pessoa',
+                'Informe o nome da pessoa para adicionar.'
+            )
+        }
+        const newPlayer = {
+            name: newPlayerName,
+            team,
+        }
+        try {
+            await playerAddByGroup(newPlayer, group)
+            setNewPlayerName('')
+        } catch (error) {
+            console.log(error)
+            if (error instanceof AppError) {
+                Alert.alert('Nova pessoa', error.message)
+            } else {
+                Alert.alert('Nova pessoa', 'Não foi possível adicionar.')
+            }
+        }
+    }
 
     return (
         <View className="flex-1 bg-gray-600 p-6">
@@ -29,8 +55,13 @@ export default function Players() {
             />
 
             <View className="w-full bg-gray-700 flex-row justify-center rounded-md">
-                <Input placeholder="Nome do participante" autoCorrect={false} />
-                <ButtonIcon icon="add" />
+                <Input
+                    value={newPlayerName}
+                    onChangeText={setNewPlayerName}
+                    placeholder="Nome do participante"
+                    autoCorrect={false}
+                />
+                <ButtonIcon icon="add" onPress={handleAddPlayer} />
             </View>
 
             <View className="w-full flex-row items-center mt-8 mx-0 mb-3">
