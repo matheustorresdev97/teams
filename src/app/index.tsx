@@ -3,6 +3,7 @@ import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { Input } from "@/components/input";
 import { ButtonIcon } from "@/components/button-icon";
+import { Filter } from "@/components/filter";
 
 
 export default function Players() {
@@ -20,6 +21,7 @@ export default function Players() {
                 <ButtonIcon icon="add" />
             </View>
 
+            <Filter title="Time A" isActive />
         </View>
     )
 }
