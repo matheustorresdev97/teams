@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 
 export default function Index() {
     return (
-        <View className="flex-1 bg-gray-600 items-center justify-center">
+        <View className="flex-1 bg-gray-600 items-center justify-center p-6">
             <Header />
         </View>
     )
