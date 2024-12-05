@@ -3,13 +3,12 @@ import { useState } from "react";
 import { Header } from "@/components/header";
 import { Highlight } from "@/components/highlight";
 import { GroupCard } from "@/components/group-card";
+import { ListEmpty } from "@/components/list-empty";
 
 
 export default function Index() {
     const [groups, setGroups] = useState<string[]>([
-        'Galera da React',
-        'Galera do React Native',
-        'Galera da Curso',
+
     ])
 
     return (
@@ -20,8 +19,11 @@ export default function Index() {
                 data={groups}
                 keyExtractor={item => item}
                 renderItem={({ item }) => <GroupCard title={item} />}
-                contentContainerStyle={{ gap: 12 }}
+                contentContainerStyle={groups.length === 0 ? { flex: 1 } : { gap: 12 }}
                 showsVerticalScrollIndicator={false}
+                ListEmptyComponent={() => (
+                    <ListEmpty message="Que tal cadastrar a primeira turma?" />
+                  )}
             />
         </View>
     )
