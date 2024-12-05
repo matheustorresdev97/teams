@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { colors } from "@/styles/colors";
 import { Users } from "lucide-react-native";
 import { Header } from "@/components/header";
@@ -8,6 +8,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { useRouter } from "expo-router";
 import { groupCreate } from "@/storage/group/group-create";
+import { AppError } from "@/utils/app-error";
 
 
 export default function NewGroup() {
@@ -16,12 +17,22 @@ export default function NewGroup() {
     const [group, setGroup] = useState('')
 
     async function handleNewGroup() {
+        if (group.trim().length === 0) {
+            return Alert.alert('Novo Grupo', 'Informe o nome da turma.')
+        }
+
         if (group.trim().length === 0) return
         try {
             await groupCreate(group)
             router.push(`/players/${group}`);
         } catch (error) {
             console.log(error)
+
+            if (error instanceof AppError) {
+                Alert.alert('Novo Grupo', error.message)
+            } else {
+                Alert.alert('Novo Grupo', 'Não foi possível criar o grupo.')
+            }
         }
 
     }
