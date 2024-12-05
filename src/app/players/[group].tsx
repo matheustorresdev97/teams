@@ -8,10 +8,14 @@ import { Filter } from "@/components/filter";
 import { PlayerCard } from "@/components/player-card";
 import { ListEmpty } from "@/components/list-empty";
 import { Button } from "@/components/button";
+import { useLocalSearchParams } from "expo-router";
 
 
 
 export default function Players() {
+    const { group } = useLocalSearchParams<{ group: string }>();
+
+
     const [team, setTeam] = useState('Time A')
     const [players, setPlayers] = useState<string[]>([])
 
@@ -20,7 +24,7 @@ export default function Players() {
             <Header showBackButton />
 
             <Highlight
-                title="Nova da Turma"
+                title={group}
                 subtitle="Adicione a galera e separe os times"
             />
 
