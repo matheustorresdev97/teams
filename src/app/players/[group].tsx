@@ -10,7 +10,8 @@ import { ListEmpty } from "@/components/list-empty";
 import { Button } from "@/components/button";
 import { useLocalSearchParams } from "expo-router";
 import { AppError } from "@/utils/app-error";
-import { playerAddByGroup } from "@/storage/player/player-add-by-group";
+import { playerAddByGroup, PlayerProps } from "@/storage/player/player-add-by-group";
+import { playersGetByGroupAndTeam } from "@/storage/player/players-get-by-group-and-team";
 
 
 
@@ -19,7 +20,7 @@ export default function Players() {
 
     const [newPlayerName, setNewPlayerName] = useState('')
     const [team, setTeam] = useState('Time A')
-    const [players, setPlayers] = useState<string[]>([])
+    const [players, setPlayers] = useState<PlayerProps[]>([])
 
     async function handleAddPlayer() {
         if (newPlayerName.trim().length === 0) {
@@ -42,6 +43,19 @@ export default function Players() {
             } else {
                 Alert.alert('Nova pessoa', 'Não foi possível adicionar.')
             }
+        }
+    }
+
+    async function fetchPlayersByTeam() {
+        try {
+            const playersByTeam = await playersGetByGroupAndTeam(group, team)
+            setPlayers(playersByTeam)
+        } catch (error) {
+            console.log(error)
+            Alert.alert(
+                'Pessoas',
+                'Nao foi possível carregar as pessoas do time selecionado.'
+            )
         }
     }
 
@@ -84,9 +98,9 @@ export default function Players() {
 
             <FlatList
                 data={players}
-                keyExtractor={item => item}
+                keyExtractor={item => item.name}
                 renderItem={({ item }) => (
-                    <PlayerCard name={item} onRemove={() => { }} />
+                    <PlayerCard name={item.name} onRemove={() => { }} />
                 )}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={[
